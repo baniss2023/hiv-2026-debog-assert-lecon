@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TP 8 : assurance qualité par les tests</title>
+<link href="assets/style.css" rel="stylesheet"/>
+<link href="assets/print.css" media="print" rel="stylesheet"/>
+</head>
+<body class="theme-powershell" id="top">
+<a aria-label="Retour en haut" class="back-to-top" href="#top">↑</a>
+<header class="topbar">
+<div class="topbar-inner">
+<section aria-label="Informations principales de la leçon" class="page-identity-strip page-identity-strip-topbar">
+<article class="identity-card identity-card-person">
+<div class="identity-media"><img alt="Anis Ghaieb" src="img/anis.png"/></div>
+<div class="identity-copy"><strong>Anis Ghaieb</strong><span>baniss2002@gmail.com</span></div>
+</article>
+<article class="identity-card identity-card-course"><div class="identity-copy"><strong>Assurance qualité par les tests</strong><span>Assertions en Python</span></div></article>
+<article class="identity-card identity-card-college">
+<div aria-label="Collège Universel" class="identity-media identity-media-logo"><span aria-hidden="true" class="identity-logo-fallback">CU</span></div>
+<div class="identity-copy"><strong>Collège Universel</strong><span>Campus Montréal</span></div>
+</article>
+</section>
+</div>
+</header>
+<main class="document document-powershell">
+<header class="document-header document-header-hybrid">
+<section aria-label="Présentation de la leçon" class="hero-wrap hero-wrap-powershell hero-wrap-overlay">
+<div class="hero-image-box hero-image-box-overlay hero-image-box-triple">
+<div class="hero-split-banner" aria-label="Visuel principal de la leçon">
+<figure class="hero-split-item hero-split-side hero-split-left"><img alt="Icônes technologiques complémentaires à gauche" src="img/icones2.png"/></figure>
+<figure class="hero-split-item hero-split-center"><img alt="Bannière centrale de la leçon sur les tests et les assertions" id="heroImage" src="img/bann-milieu.png"/></figure>
+<figure class="hero-split-item hero-split-side hero-split-right"><img alt="Icônes technologiques complémentaires à droite" src="img/icones1.png"/></figure>
+</div>
+</div>
+<section class="hero-title-panel">
+<p class="hero-kicker-badge">TP</p>
+<h1 class="lesson-title-hybrid hero-title-overlay">TP 8 : assurance qualité par les tests</h1>
+</section>
+<section class="lesson-intro-box lesson-intro-box-fullwidth">
+<p class="lesson-subtitle-hybrid">Cette leçon explique comment améliorer un programme Python de gestion des étudiants en ajoutant des assertions. L’objectif est de rendre le programme plus fiable : il doit accepter les données valides, mais aussi détecter les situations anormales comme un nom vide, un identifiant invalide, un téléphone mal écrit, un étudiant inexistant ou des données incorrectes dans un fichier.</p>
+</section>
+</section>
+<section aria-label="Vue d’ensemble de la leçon" class="document-overview" id="sommaire">
+<div class="overview-panel">
+<h2 class="overview-title">Table des matières</h2>
+<nav aria-label="Table des matières de la leçon" class="toc-nav">
+<ul class="toc-list">
+<li class="toc-item toc-level-1"><a class="toc-link" href="#partie-1">Comprendre l’assurance qualité</a></li>
+<li class="toc-item toc-level-1"><a class="toc-link" href="#partie-2">Comprendre les assertions en Python</a></li>
+<li class="toc-item toc-level-1"><a class="toc-link" href="#partie-3">Présenter le programme de départ</a></li>
+<li class="toc-item toc-level-1"><a class="toc-link" href="#partie-4">Choisir les conditions de validation</a></li>
+<li class="toc-item toc-level-1"><a class="toc-link" href="#partie-5">Placer les assertions dans le programme</a></li>
+<li class="toc-item toc-level-1"><a class="toc-link" href="#partie-6">Suivre une méthode de travail</a></li>
+<li class="toc-item toc-level-1"><a class="toc-link" href="#partie-7">Organiser les tests dans un tableau</a></li>
+<li class="toc-item toc-level-1"><a class="toc-link" href="#partie-8">Éviter les erreurs fréquentes</a></li>
+<li class="toc-item toc-level-1"><a class="toc-link" href="#partie-9">À retenir</a></li>
+<li class="toc-item toc-level-1"><a class="toc-link" href="#partie-10">Questions et travail demandé</a></li>
+<li class="toc-item toc-level-1"><a class="toc-link" href="#qcm-final">QCM final de validation</a></li>
+</ul>
+</nav>
+</div>
+<div class="overview-panel">
+<h2 class="overview-title">Objectifs de la leçon</h2>
+<ul class="goal-list">
+<li>Comprendre le rôle de l’assurance qualité dans un programme.</li>
+<li>Expliquer à quoi sert une assertion en Python.</li>
+<li>Analyser un programme existant de gestion des étudiants.</li>
+<li>Choisir des conditions de validation pertinentes.</li>
+<li>Ajouter des assertions aux bons endroits dans le code.</li>
+<li>Tester le programme avec des données valides et invalides.</li>
+<li>Documenter les résultats des tests de manière claire.</li>
+<li>Présenter un code final propre, vérifié et lisible.</li>
+</ul>
+</div>
+</section>
+</header>
+
+<section class="part" id="partie-1">
+<div class="part-header"><h2 class="part-title">Comprendre l’assurance qualité</h2></div>
+<div class="part-body">
+<section class="section-block line-section"><h3 class="section-title">Le rôle de l’assurance qualité</h3><div class="section-body">
+<p>L’assurance qualité consiste à vérifier qu’un programme respecte les règles attendues et qu’il fonctionne correctement dans plusieurs situations. Dans une application de gestion des étudiants, le programme ne doit pas seulement fonctionner quand les données sont parfaites. Il doit aussi empêcher l’enregistrement de données incorrectes.</p>
+<p>Par exemple, il ne devrait pas être possible d’enregistrer :</p>
+<ul class="compact-list"><li>Un étudiant sans nom.</li><li>Un ID négatif.</li><li>Un numéro de téléphone contenant des lettres.</li><li>Deux étudiants avec le même ID.</li><li>Des données mal formées provenant d’un fichier.</li></ul>
+<div class="callout spaced-block lesson-callout"><strong>Idée clé :</strong> l’assurance qualité protège le programme contre les données incorrectes et rend son comportement plus fiable.</div>
+<figure class="lesson-figure"><img src="img-tests-qualite/objectifs-tests-qualite.png" alt="Schéma montrant les trois objectifs de la qualité du code : conformité, performance, sécurité et robustesse."/><figcaption>Ce schéma place la qualité du code au centre et montre trois axes importants : conformité aux exigences, performance selon le contexte, sécurité et robustesse face aux erreurs.</figcaption></figure>
+</div></section>
+<section class="section-block line-section"><h3 class="section-title">Pourquoi tester un programme ?</h3><div class="section-body">
+<p>Tester un programme permet de vérifier son comportement dans des situations différentes. Il faut tester les cas valides, mais aussi les cas invalides. Un programme qui accepte seulement les bonnes données sans détecter les mauvaises n’est pas encore fiable.</p>
+<div class="mini-grid">
+<article class="mini-card"><h4>Exemple de cas valide</h4><p><strong>ID :</strong> 1<br/><strong>Nom :</strong> Amine<br/><strong>Téléphone :</strong> 5141234567</p><p>Ici, l’ID est positif, le nom n’est pas vide et le téléphone contient exactement 10 chiffres.</p></article>
+<article class="mini-card"><h4>Exemples de cas invalides</h4><p><strong>ID :</strong> -3<br/><strong>Nom :</strong> Amine<br/><strong>Téléphone :</strong> 5141234567</p><p><strong>ID :</strong> 2<br/><strong>Nom :</strong><br/><strong>Téléphone :</strong> 5141234567</p><p><strong>ID :</strong> 3<br/><strong>Nom :</strong> Sarah<br/><strong>Téléphone :</strong> 12345</p></article>
+</div>
+<figure class="lesson-figure"><img src="img-tests-qualite/comparaison-types-tests.png" alt="Comparaison des principaux types de tests appliqués au code : unitaire, intégration et charge ou performance."/><figcaption>Ce visuel distingue trois besoins de test : vérifier une fonction seule, vérifier la collaboration entre plusieurs fonctions et mesurer le comportement sous contrainte.</figcaption></figure>
+<figure class="lesson-figure"><img src="img-tests-qualite/mesure-performance-test.png" alt="Schéma montrant les étapes d’un test de performance avec chronomètre, calcul de durée et comparaison à un seuil."/><figcaption>Ce schéma montre qu’un test de performance consiste à mesurer une durée, puis à la comparer à un seuil pour décider si le résultat est acceptable ou trop élevé.</figcaption></figure>
+<div class="callout spaced-block warning-callout"><strong>Remarque importante :</strong> un programme qui ne plante pas n’est pas forcément correct. S’il accepte un téléphone de 4 chiffres, il peut continuer à fonctionner, mais la donnée enregistrée reste mauvaise.</div>
+</div></section>
+</div>
+</section>
+
+<section class="part" id="partie-2">
+<div class="part-header"><h2 class="part-title">Comprendre les assertions en Python</h2></div>
+<div class="part-body">
+<section class="section-block line-section"><h3 class="section-title">Définition d’une assertion</h3><div class="section-body">
+<p>Une assertion est une instruction Python qui vérifie qu’une condition est vraie. Si la condition est vraie, le programme continue normalement. Si la condition est fausse, Python arrête l’exécution et affiche une erreur de type <strong>AssertionError</strong>.</p>
+<section class="snippet-embed"><section class="code-window theme-python" data-help-title="assertion_syntaxe.py" data-help-role="Ce bloc de code illustre directement la notion expliquée dans cette section et sert de référence de lecture pour l’étudiant.">
+<div class="window-header"><div class="window-controls"><span></span><span></span><span></span></div><div class="window-title">assertion_syntaxe.py</div></div>
+<div class="code-body"><div class="terminal-intro">Syntaxe générale de assert</div><div class="code-content"><div class="line" data-help-title="Syntaxe générale de assert" data-help-role="Cette ligne vérifie une condition. Si la condition est fausse, Python arrête l’exécution et affiche le message indiqué pour aider à comprendre l’erreur."><span class="line-no">1</span><span class="line-text"><span class="py-keyword">assert</span> condition, <span class="py-string">&quot;message d&#x27;erreur&quot;</span></span></div></div></div>
+</section></section>
+<figure class="lesson-figure"><img src="img-tests-qualite/fonctionnement-assert-python.png" alt="Schéma montrant le fonctionnement de assert condition, message selon une condition vraie ou fausse."/><figcaption>Ce schéma montre que l’instruction assert agit comme un point de contrôle : la condition vraie laisse continuer le programme, tandis que la condition fausse déclenche une AssertionError et affiche le message prévu.</figcaption></figure>
+</div></section>
+<section class="section-block line-section"><h3 class="section-title">Exemple simple</h3><div class="section-body">
+<p>Dans l’exemple suivant, Python vérifie que l’âge est supérieur ou égal à zéro. Si <strong>age</strong> vaut 18, tout va bien. Si <strong>age</strong> vaut -5, l’assertion échoue, car un âge négatif n’est pas logique.</p>
+<section class="snippet-embed"><section class="code-window theme-python" data-help-title="assertion_age.py" data-help-role="Ce bloc de code illustre directement la notion expliquée dans cette section et sert de référence de lecture pour l’étudiant.">
+<div class="window-header"><div class="window-controls"><span></span><span></span><span></span></div><div class="window-title">assertion_age.py</div></div>
+<div class="code-body"><div class="terminal-intro">Exemple simple</div><div class="code-content"><div class="line" data-help-title="Valeur testée" data-help-role="La variable age reçoit la valeur 18 afin de disposer d’une donnée à valider dans l’exemple."><span class="line-no">1</span><span class="line-text">age <span class="py-operator">=</span> <span class="py-number">18</span></span></div><div class="line" data-help-title="Validation de l’âge" data-help-role="Cette assertion vérifie que la valeur stockée dans age n’est pas négative, car un âge négatif n’est pas logique dans ce contexte."><span class="line-no">2</span><span class="line-text"><span class="py-keyword">assert</span> age <span class="py-operator">&gt;=</span> <span class="py-number">0</span>, <span class="py-string">&quot;L&#x27;âge ne peut pas être négatif.&quot;</span></span></div></div></div>
+</section></section>
+</div></section>
+<section class="section-block line-section"><h3 class="section-title">Exemple appliqué aux étudiants</h3><div class="section-body">
+<p>Pour un étudiant, le nom ne doit pas être vide. La méthode <strong>strip()</strong> enlève les espaces au début et à la fin du texte. Cela évite qu’un nom composé uniquement d’espaces soit accepté.</p>
+<div class="duo-grid"><section class="snippet-embed"><section class="code-window theme-python" data-help-title="assertion_nom.py" data-help-role="Ce bloc de code illustre directement la notion expliquée dans cette section et sert de référence de lecture pour l’étudiant.">
+<div class="window-header"><div class="window-controls"><span></span><span></span><span></span></div><div class="window-title">assertion_nom.py</div></div>
+<div class="code-body"><div class="terminal-intro">Validation d’un nom étudiant</div><div class="code-content"><div class="line" data-help-title="Nom à contrôler" data-help-role="La variable nom contient ici le nom saisi ou préparé pour l’étudiant."><span class="line-no">1</span><span class="line-text">nom <span class="py-operator">=</span> <span class="py-string">&quot;Amine&quot;</span></span></div><div class="line" data-help-title="Détection d’un nom vide" data-help-role="Cette assertion enlève les espaces autour du nom avec strip(), puis vérifie qu’il reste réellement du texte avant d’accepter la donnée."><span class="line-no">2</span><span class="line-text"><span class="py-keyword">assert</span> nom.<span class="py-builtin">strip</span>() <span class="py-operator">!=</span> <span class="py-string">&quot;&quot;</span>, <span class="py-string">&quot;Le nom de l&#x27;étudiant ne doit pas être vide.&quot;</span></span></div></div></div>
+</section></section><section class="snippet-embed"><section class="code-window theme-python" data-help-title="nom_espaces.py" data-help-role="Ce bloc de code illustre directement la notion expliquée dans cette section et sert de référence de lecture pour l’étudiant.">
+<div class="window-header"><div class="window-controls"><span></span><span></span><span></span></div><div class="window-title">nom_espaces.py</div></div>
+<div class="code-body"><div class="terminal-intro">Cas problématique</div><div class="code-content"><div class="line" data-help-title="Nom composé d’espaces" data-help-role="Cette ligne simule une saisie qui semble contenir des caractères, mais qui ne contient en réalité que des espaces."><span class="line-no">1</span><span class="line-text">nom <span class="py-operator">=</span> <span class="py-string">&quot;   &quot;</span></span></div><div class="line" data-help-title="Contrôle avec strip()" data-help-role="Cette assertion transforme les espaces en chaîne vide après strip(), ce qui permet de détecter correctement le nom invalide."><span class="line-no">2</span><span class="line-text"><span class="py-keyword">assert</span> nom.<span class="py-builtin">strip</span>() <span class="py-operator">!=</span> <span class="py-string">&quot;&quot;</span>, <span class="py-string">&quot;Le nom de l&#x27;étudiant ne doit pas être vide.&quot;</span></span></div></div></div>
+</section></section></div>
+<div class="callout spaced-block lesson-callout"><strong>Pourquoi ajouter un message d’erreur ?</strong> Le message rend l’assertion plus claire. Si l’erreur se produit, on comprend immédiatement quelle règle n’a pas été respectée.</div>
+</div></section>
+</div>
+</section>
+
+<section class="part" id="partie-3">
+<div class="part-header"><h2 class="part-title">Présenter le programme de départ</h2></div>
+<div class="part-body">
+<section class="section-block line-section"><h3 class="section-title">Rôle général du programme</h3><div class="section-body">
+<p>Le programme de départ est une application console en Python. Une application console fonctionne dans le terminal : l’utilisateur lit un menu, tape un choix, puis entre les informations demandées.</p>
+<p>Le programme permet de gérer une liste d’étudiants avec cinq actions principales :</p>
+<ol><li>Afficher les étudiants.</li><li>Ajouter un étudiant.</li><li>Modifier un étudiant.</li><li>Supprimer un étudiant.</li><li>Quitter.</li></ol>
+<p>Chaque action correspond à une fonction du programme :</p>
+<ul><li><strong>charger_etudiants()</strong> charge les étudiants depuis le fichier.</li><li><strong>afficher_etudiants()</strong> affiche les étudiants.</li><li><strong>ajouter_etudiant()</strong> ajoute un étudiant.</li><li><strong>modifier_etudiant()</strong> modifie un étudiant existant.</li><li><strong>supprimer_etudiant()</strong> supprime un étudiant.</li><li><strong>sauvegarder_etudiants()</strong> sauvegarde les étudiants dans le fichier.</li></ul>
+</div></section>
+<section class="section-block line-section"><h3 class="section-title">Le fichier etudiants.txt</h3><div class="section-body">
+<p>Le programme utilise un fichier nommé <strong>etudiants.txt</strong>. Ce fichier sert à conserver les informations des étudiants même après la fermeture du programme.</p>
+<section class="snippet-embed"><section class="code-window theme-python" data-help-title="fichier_etudiants.py" data-help-role="Ce bloc de code illustre directement la notion expliquée dans cette section et sert de référence de lecture pour l’étudiant.">
+<div class="window-header"><div class="window-controls"><span></span><span></span><span></span></div><div class="window-title">fichier_etudiants.py</div></div>
+<div class="code-body"><div class="terminal-intro">Nom du fichier utilisé</div><div class="code-content"><div class="line" data-help-title="Constante du fichier" data-help-role="Cette ligne centralise le nom du fichier de données afin que le programme sache où lire et sauvegarder les étudiants."><span class="line-no">1</span><span class="line-text">FICHIER_ETUDIANTS <span class="py-operator">=</span> <span class="py-string">&quot;etudiants.txt&quot;</span></span></div></div></div>
+</section></section>
+<p>Exemple de contenu possible :</p>
+<div class="resultblock"><div class="pcframe"><div class="pcinner"><pre class="resultpre" data-help-title="Exemple de résultat attendu" data-help-role="Ce bloc montre un résultat de sortie possible. Il ne s’agit pas d’une commande à taper, mais d’une trace à comparer avec le comportement du programme.">1,Amine,5141234567
+2,Sarah,4389876543
+3,Youssef,5145552222</pre></div></div></div>
+<p>Chaque ligne contient trois informations séparées par des virgules : l’ID, le nom et le numéro de téléphone.</p>
+</div></section>
+<section class="section-block line-section"><h3 class="section-title">La structure d’un étudiant</h3><div class="section-body">
+<p>Dans le programme, chaque étudiant est représenté par un dictionnaire Python. Un dictionnaire associe des clés à des valeurs.</p>
+<section class="snippet-embed"><section class="code-window theme-python" data-help-title="structure_etudiant.py" data-help-role="Ce bloc de code illustre directement la notion expliquée dans cette section et sert de référence de lecture pour l’étudiant.">
+<div class="window-header"><div class="window-controls"><span></span><span></span><span></span></div><div class="window-title">structure_etudiant.py</div></div>
+<div class="code-body"><div class="terminal-intro">Dictionnaire représentant un étudiant</div><div class="code-content"><div class="line" data-help-title="Structure d’un étudiant" data-help-role="Ce dictionnaire regroupe les trois informations nécessaires pour représenter un étudiant : son identifiant, son nom et son téléphone."><span class="line-no">1</span><span class="line-text">etudiant <span class="py-operator">=</span> {<span class="py-string">&quot;id&quot;</span>: <span class="py-string">&quot;1&quot;</span>, <span class="py-string">&quot;nom&quot;</span>: <span class="py-string">&quot;Amine&quot;</span>, <span class="py-string">&quot;tel&quot;</span>: <span class="py-string">&quot;5141234567&quot;</span>}</span></div></div></div>
+</section></section>
+<ul><li>La clé <strong>id</strong> contient l’identifiant de l’étudiant.</li><li>La clé <strong>nom</strong> contient le nom.</li><li>La clé <strong>tel</strong> contient le numéro de téléphone.</li></ul>
+</div></section>
+</div>
+</section>
+
+<section class="part" id="partie-4">
+<div class="part-header"><h2 class="part-title">Choisir les conditions de validation</h2></div>
+<div class="part-body">
+<section class="section-block line-section"><h3 class="section-title">Conditions possibles</h3><div class="section-body">
+<p>Dans ce travail, il faut choisir des conditions de validation parmi celles proposées, puis les vérifier avec des assertions. La consigne finale demande de choisir 10 conditions et de les ajouter aux bons endroits dans le code.</p>
+<div class="table-wrap spaced-block"><table><thead><tr><th>No</th><th>Condition de validation</th><th>Type de contrôle</th></tr></thead><tbody>
+<tr><td>1</td><td>L’ID de l’étudiant doit être un entier positif.</td><td>Donnée</td></tr>
+<tr><td>2</td><td>Le nom de l’étudiant ne doit pas être vide.</td><td>Donnée</td></tr>
+<tr><td>3</td><td>Le numéro de téléphone doit contenir exactement 10 chiffres.</td><td>Donnée</td></tr>
+<tr><td>4</td><td>L’ID d’un étudiant doit être unique lors de l’ajout.</td><td>Opération d’ajout</td></tr>
+<tr><td>5</td><td>Le nom de l’étudiant ne doit pas dépasser 50 caractères.</td><td>Donnée</td></tr>
+<tr><td>6</td><td>Lors de la modification, l’ID doit exister dans la liste des étudiants.</td><td>Opération de modification</td></tr>
+<tr><td>7</td><td>Lors de la suppression, l’ID doit exister dans la liste des étudiants.</td><td>Opération de suppression</td></tr>
+<tr><td>8</td><td>La liste des étudiants ne doit pas être vide avant l’affichage.</td><td>Opération d’affichage</td></tr>
+<tr><td>9</td><td>Lors de l’affichage, chaque étudiant doit avoir un ID, un nom et un numéro de téléphone valides.</td><td>Contrôle global</td></tr>
+<tr><td>10</td><td>Le fichier etudiants.txt doit exister avant de charger les données.</td><td>Fichier</td></tr>
+<tr><td>11</td><td>Les données chargées depuis le fichier doivent respecter les validations.</td><td>Fichier</td></tr>
+</tbody></table></div>
+<div class="callout spaced-block final-callout"><strong>À retenir :</strong> certaines conditions vérifient les données elles-mêmes, comme l’ID, le nom et le téléphone. D’autres vérifient une opération, par exemple modifier un étudiant seulement si son ID existe.</div>
+</div></section>
+</div>
+</section>
+
+<section class="part" id="partie-5">
+<div class="part-header"><h2 class="part-title">Placer les assertions dans le programme</h2></div>
+<div class="part-body">
+<section class="section-block line-section"><h3 class="section-title">Dans la fonction d’ajout</h3><div class="section-body">
+<p>La fonction <strong>ajouter_etudiant()</strong> récupère l’ID, le nom et le téléphone saisis par l’utilisateur. C’est donc un endroit important pour vérifier les données avant d’ajouter l’étudiant dans la liste.</p>
+<section class="snippet-embed"><section class="code-window theme-python" data-help-title="ajouter_etudiant_assertions.py" data-help-role="Ce bloc de code illustre directement la notion expliquée dans cette section et sert de référence de lecture pour l’étudiant.">
+<div class="window-header"><div class="window-controls"><span></span><span></span><span></span></div><div class="window-title">ajouter_etudiant_assertions.py</div></div>
+<div class="code-body"><div class="terminal-intro">Assertions placées avant l’ajout</div><div class="code-content"><div class="line" data-help-title="ID positif" data-help-role="Cette assertion vérifie d’abord que id_ contient uniquement des chiffres, puis que sa valeur numérique est supérieure à zéro."><span class="line-no">1</span><span class="line-text"><span class="py-keyword">assert</span> id_.<span class="py-builtin">isdigit</span>() <span class="py-keyword">and</span> <span class="py-builtin">int</span>(id_) <span class="py-operator">&gt;</span> <span class="py-number">0</span>, <span class="py-string">&quot;L&#x27;ID doit être un entier positif.&quot;</span></span></div><div class="line" data-help-title="Nom non vide" data-help-role="Cette assertion empêche l’ajout d’un étudiant dont le nom serait vide ou composé seulement d’espaces."><span class="line-no">2</span><span class="line-text"><span class="py-keyword">assert</span> nom.<span class="py-builtin">strip</span>() <span class="py-operator">!=</span> <span class="py-string">&quot;&quot;</span>, <span class="py-string">&quot;Le nom ne doit pas être vide.&quot;</span></span></div><div class="line" data-help-title="Longueur du nom" data-help-role="Cette assertion limite le nom à 50 caractères afin d’éviter une donnée trop longue ou peu réaliste."><span class="line-no">3</span><span class="line-text"><span class="py-keyword">assert</span> <span class="py-builtin">len</span>(nom) <span class="py-operator">&lt;=</span> <span class="py-number">50</span>, <span class="py-string">&quot;Le nom ne doit pas dépasser 50 caractères.&quot;</span></span></div><div class="line" data-help-title="Téléphone valide" data-help-role="Cette assertion vérifie en même temps que le téléphone contient uniquement des chiffres et qu’il possède exactement 10 chiffres."><span class="line-no">4</span><span class="line-text"><span class="py-keyword">assert</span> tel.<span class="py-builtin">isdigit</span>() <span class="py-keyword">and</span> <span class="py-builtin">len</span>(tel) <span class="py-operator">==</span> <span class="py-number">10</span>, <span class="py-string">&quot;Le téléphone doit contenir exactement 10 chiffres.&quot;</span></span></div><div class="line" data-help-title="ID unique" data-help-role="Cette assertion compare l’ID saisi avec les ID déjà présents dans la liste pour éviter deux étudiants ayant le même identifiant."><span class="line-no">5</span><span class="line-text"><span class="py-keyword">assert</span> id_ <span class="py-keyword">not</span> <span class="py-keyword">in</span> [e[<span class="py-string">&quot;id&quot;</span>] <span class="py-keyword">for</span> e <span class="py-keyword">in</span> etudiants], <span class="py-string">&quot;Cet ID existe déjà.&quot;</span></span></div></div></div>
+</section></section>
+<p>La liste <strong>[e["id"] for e in etudiants]</strong> permet de récupérer tous les ID déjà utilisés. Elle sert ici à empêcher l’ajout de deux étudiants avec le même ID.</p>
+<div class="callout spaced-block warning-callout"><strong>Erreur fréquente à éviter :</strong> il ne faut pas vérifier seulement que le téléphone a 10 caractères. La valeur <strong>514ABC7890</strong> contient 10 caractères, mais ce n’est pas un numéro valide.</div>
+</div></section>
+<section class="section-block line-section"><h3 class="section-title">Dans la fonction de modification</h3><div class="section-body">
+<p>La fonction <strong>modifier_etudiant()</strong> demande l’ID de l’étudiant à modifier. Avant toute modification, il faut vérifier que cet ID existe réellement dans la liste.</p>
+<section class="snippet-embed"><section class="code-window theme-python" data-help-title="modifier_etudiant_assertions.py" data-help-role="Ce bloc de code illustre directement la notion expliquée dans cette section et sert de référence de lecture pour l’étudiant.">
+<div class="window-header"><div class="window-controls"><span></span><span></span><span></span></div><div class="window-title">modifier_etudiant_assertions.py</div></div>
+<div class="code-body"><div class="terminal-intro">Assertions pendant la modification</div><div class="code-content"><div class="line" data-help-title="Existence de l’étudiant" data-help-role="Cette assertion vérifie que l’ID demandé existe réellement avant de modifier un étudiant."><span class="line-no">1</span><span class="line-text"><span class="py-keyword">assert</span> id_ <span class="py-keyword">in</span> [e[<span class="py-string">&quot;id&quot;</span>] <span class="py-keyword">for</span> e <span class="py-keyword">in</span> etudiants], <span class="py-string">&quot;L&#x27;ID à modifier doit exister.&quot;</span></span></div><div class="line" data-help-title="Nouveau nom non vide" data-help-role="Cette assertion contrôle le nouveau nom seulement lorsqu’une nouvelle valeur est réellement saisie."><span class="line-no">2</span><span class="line-text"><span class="py-keyword">assert</span> nouveau_nom.<span class="py-builtin">strip</span>() <span class="py-operator">!=</span> <span class="py-string">&quot;&quot;</span>, <span class="py-string">&quot;Le nouveau nom ne doit pas être vide.&quot;</span></span></div><div class="line" data-help-title="Longueur du nouveau nom" data-help-role="Cette assertion évite qu’un nouveau nom trop long remplace une donnée déjà valide."><span class="line-no">3</span><span class="line-text"><span class="py-keyword">assert</span> <span class="py-builtin">len</span>(nouveau_nom) <span class="py-operator">&lt;=</span> <span class="py-number">50</span>, <span class="py-string">&quot;Le nouveau nom ne doit pas dépasser 50 caractères.&quot;</span></span></div><div class="line" data-help-title="Nouveau téléphone valide" data-help-role="Cette assertion vérifie que le nouveau téléphone respecte la règle des 10 chiffres."><span class="line-no">4</span><span class="line-text"><span class="py-keyword">assert</span> nouveau_tel.<span class="py-builtin">isdigit</span>() <span class="py-keyword">and</span> <span class="py-builtin">len</span>(nouveau_tel) <span class="py-operator">==</span> <span class="py-number">10</span>, <span class="py-string">&quot;Le nouveau téléphone doit contenir exactement 10 chiffres.&quot;</span></span></div></div></div>
+</section></section>
+<p>Dans le code de départ, si l’utilisateur laisse le nouveau nom vide, le programme garde l’ancien nom. Cette logique peut être conservée. Dans ce cas, il faut vérifier seulement les nouvelles valeurs réellement saisies.</p>
+</div></section>
+<section class="section-block line-section"><h3 class="section-title">Dans la fonction de suppression</h3><div class="section-body">
+<p>La fonction <strong>supprimer_etudiant()</strong> demande l’ID de l’étudiant à supprimer. Avant de supprimer, il faut vérifier que l’étudiant existe.</p>
+<section class="snippet-embed"><section class="code-window theme-python" data-help-title="supprimer_etudiant_assertions.py" data-help-role="Ce bloc de code illustre directement la notion expliquée dans cette section et sert de référence de lecture pour l’étudiant.">
+<div class="window-header"><div class="window-controls"><span></span><span></span><span></span></div><div class="window-title">supprimer_etudiant_assertions.py</div></div>
+<div class="code-body"><div class="terminal-intro">Assertion avant suppression</div><div class="code-content"><div class="line" data-help-title="Suppression contrôlée" data-help-role="Cette assertion vérifie que l’ID à supprimer correspond à un étudiant existant afin d’éviter une suppression sans cible réelle."><span class="line-no">1</span><span class="line-text"><span class="py-keyword">assert</span> id_ <span class="py-keyword">in</span> [e[<span class="py-string">&quot;id&quot;</span>] <span class="py-keyword">for</span> e <span class="py-keyword">in</span> etudiants], <span class="py-string">&quot;L&#x27;ID à supprimer doit exister.&quot;</span></span></div></div></div>
+</section></section>
+</div></section>
+<section class="section-block line-section"><h3 class="section-title">Dans la fonction d’affichage</h3><div class="section-body">
+<p>La fonction <strong>afficher_etudiants()</strong> affiche la liste des étudiants. On peut vérifier deux éléments : la liste n’est pas vide avant l’affichage, et chaque étudiant possède des données valides.</p>
+<section class="snippet-embed"><section class="code-window theme-python" data-help-title="afficher_etudiants_assertions.py" data-help-role="Ce bloc de code illustre directement la notion expliquée dans cette section et sert de référence de lecture pour l’étudiant.">
+<div class="window-header"><div class="window-controls"><span></span><span></span><span></span></div><div class="window-title">afficher_etudiants_assertions.py</div></div>
+<div class="code-body"><div class="terminal-intro">Assertions avant et pendant l’affichage</div><div class="code-content"><div class="line" data-help-title="Liste non vide" data-help-role="Cette assertion transforme le cas de liste vide en erreur contrôlée, au lieu d’afficher simplement un message informatif."><span class="line-no">1</span><span class="line-text"><span class="py-keyword">assert</span> <span class="py-builtin">len</span>(etudiants) <span class="py-operator">&gt;</span> <span class="py-number">0</span>, <span class="py-string">&quot;La liste des étudiants ne doit pas être vide.&quot;</span></span></div><div class="line" data-help-title="ID affiché valide" data-help-role="Cette assertion vérifie que chaque étudiant affiché possède un identifiant numérique positif."><span class="line-no">2</span><span class="line-text"><span class="py-keyword">assert</span> etudiant[<span class="py-string">&quot;id&quot;</span>].<span class="py-builtin">isdigit</span>() <span class="py-keyword">and</span> <span class="py-builtin">int</span>(etudiant[<span class="py-string">&quot;id&quot;</span>]) <span class="py-operator">&gt;</span> <span class="py-number">0</span>, <span class="py-string">&quot;ID invalide.&quot;</span></span></div><div class="line" data-help-title="Nom affiché valide" data-help-role="Cette assertion empêche l’affichage d’un étudiant dont le nom serait vide."><span class="line-no">3</span><span class="line-text"><span class="py-keyword">assert</span> etudiant[<span class="py-string">&quot;nom&quot;</span>].<span class="py-builtin">strip</span>() <span class="py-operator">!=</span> <span class="py-string">&quot;&quot;</span>, <span class="py-string">&quot;Nom invalide.&quot;</span></span></div><div class="line" data-help-title="Téléphone affiché valide" data-help-role="Cette assertion vérifie que le téléphone de chaque étudiant affiché respecte encore la règle des 10 chiffres."><span class="line-no">4</span><span class="line-text"><span class="py-keyword">assert</span> etudiant[<span class="py-string">&quot;tel&quot;</span>].<span class="py-builtin">isdigit</span>() <span class="py-keyword">and</span> <span class="py-builtin">len</span>(etudiant[<span class="py-string">&quot;tel&quot;</span>]) <span class="py-operator">==</span> <span class="py-number">10</span>, <span class="py-string">&quot;Téléphone invalide.&quot;</span></span></div></div></div>
+</section></section>
+<p>Dans le code de départ, si la liste est vide, le programme affiche simplement le message suivant :</p>
+<div class="resultblock"><div class="pcframe"><div class="pcinner"><pre class="resultpre" data-help-title="Exemple de résultat attendu" data-help-role="Ce bloc montre un résultat de sortie possible. Il ne s’agit pas d’une commande à taper, mais d’une trace à comparer avec le comportement du programme.">Aucun étudiant enregistré.</pre></div></div></div>
+<p>Si la condition « la liste ne doit pas être vide avant d’afficher les étudiants » est choisie, l’assertion change ce comportement. Le programme signalera une erreur au lieu d’afficher ce message. Il faut donc être capable d’expliquer ce choix.</p>
+</div></section>
+<section class="section-block line-section"><h3 class="section-title">Dans la fonction de chargement</h3><div class="section-body">
+<p>La fonction <strong>charger_etudiants()</strong> lit les données depuis le fichier. Elle peut vérifier que le fichier existe avant la lecture, puis contrôler chaque ligne lue.</p>
+<section class="snippet-embed"><section class="code-window theme-python" data-help-title="charger_etudiants_assertions.py" data-help-role="Ce bloc de code illustre directement la notion expliquée dans cette section et sert de référence de lecture pour l’étudiant.">
+<div class="window-header"><div class="window-controls"><span></span><span></span><span></span></div><div class="window-title">charger_etudiants_assertions.py</div></div>
+<div class="code-body"><div class="terminal-intro">Assertions pendant le chargement</div><div class="code-content"><div class="line" data-help-title="Fichier présent" data-help-role="Cette assertion vérifie que le fichier de données existe avant de tenter de le lire."><span class="line-no">1</span><span class="line-text"><span class="py-keyword">assert</span> os.path.<span class="py-builtin">exists</span>(FICHIER_ETUDIANTS), <span class="py-string">&quot;Le fichier etudiants.txt doit exister avant le chargement.&quot;</span></span></div><div class="line" data-help-title="ID chargé valide" data-help-role="Cette assertion contrôle l’identifiant lu depuis le fichier pour éviter d’importer une donnée incohérente."><span class="line-no">2</span><span class="line-text"><span class="py-keyword">assert</span> id_.<span class="py-builtin">isdigit</span>() <span class="py-keyword">and</span> <span class="py-builtin">int</span>(id_) <span class="py-operator">&gt;</span> <span class="py-number">0</span>, <span class="py-string">&quot;ID invalide dans le fichier.&quot;</span></span></div><div class="line" data-help-title="Nom chargé valide" data-help-role="Cette assertion refuse une ligne de fichier où le nom serait vide."><span class="line-no">3</span><span class="line-text"><span class="py-keyword">assert</span> nom.<span class="py-builtin">strip</span>() <span class="py-operator">!=</span> <span class="py-string">&quot;&quot;</span>, <span class="py-string">&quot;Nom vide dans le fichier.&quot;</span></span></div><div class="line" data-help-title="Téléphone chargé valide" data-help-role="Cette assertion vérifie que le téléphone provenant du fichier contient exactement 10 chiffres."><span class="line-no">4</span><span class="line-text"><span class="py-keyword">assert</span> tel.<span class="py-builtin">isdigit</span>() <span class="py-keyword">and</span> <span class="py-builtin">len</span>(tel) <span class="py-operator">==</span> <span class="py-number">10</span>, <span class="py-string">&quot;Téléphone invalide dans le fichier.&quot;</span></span></div></div></div>
+</section></section>
+<p>Avant de tester cette partie, il est utile de créer volontairement une erreur dans le fichier <strong>etudiants.txt</strong>, par exemple un téléphone trop court. Ensuite, le programme peut être lancé pour vérifier si l’assertion détecte le problème.</p>
+<figure class="lesson-figure"><img src="img-tests-qualite/assertions-alarmes-validation.png" alt="Schéma montrant une chaîne de blocs de code reliés par des données et contrôlés par des assertions vertes ou rouges."/><figcaption>Ce schéma résume l’idée centrale : chaque bloc de code produit une donnée transmise au bloc suivant. Les assertions agissent comme des alarmes de validation. Si une alarme rouge s’allume, le résultat final devient suspect.</figcaption></figure>
+</div></section>
+</div>
+</section>
+
+<section class="part" id="partie-6">
+<div class="part-header"><h2 class="part-title">Suivre une méthode de travail</h2></div>
+<div class="part-body">
+<section class="section-block line-section"><h3 class="section-title">Étapes recommandées</h3><div class="section-body">
+<ol><li><strong>Lire le code de départ.</strong> Avant de modifier le programme, il faut comprendre le rôle de chaque fonction : lecture, ajout, modification, suppression, affichage et sauvegarde.</li><li><strong>Choisir les conditions.</strong> Il faut choisir 10 conditions parmi la liste proposée et les écrire clairement dans le document Word.</li><li><strong>Ajouter les assertions.</strong> Il ne faut pas placer toutes les assertions au même endroit. Chaque assertion doit être placée là où la donnée est utilisée ou modifiée.</li><li><strong>Tester le programme.</strong> Les tests doivent inclure des scénarios valides et invalides.</li><li><strong>Documenter les résultats.</strong> Les captures d’écran doivent montrer l’action effectuée, les données entrées, le résultat obtenu et le message d’erreur si une assertion échoue.</li><li><strong>Préparer le fichier final.</strong> Le fichier Word doit contenir le nom, le code étudiant, les conditions choisies, le code final, les preuves de test et de courtes explications si nécessaire.</li></ol>
+<div class="callout spaced-block lesson-callout"><strong>Repère pratique :</strong> les assertions sur les données saisies se placent dans <strong>ajouter_etudiant()</strong>, l’existence d’un ID à modifier dans <strong>modifier_etudiant()</strong>, l’existence d’un ID à supprimer dans <strong>supprimer_etudiant()</strong>, et les validations de fichier dans <strong>charger_etudiants()</strong>.</div>
+</div></section>
+<section class="section-block line-section"><h3 class="section-title">Tests recommandés</h3><div class="section-body">
+<ul><li>Ajouter un étudiant valide.</li><li>Ajouter un étudiant avec un ID négatif.</li><li>Ajouter un étudiant avec un nom vide.</li><li>Ajouter un étudiant avec un téléphone invalide.</li><li>Ajouter un étudiant avec un ID déjà existant.</li><li>Modifier un étudiant existant.</li><li>Modifier un étudiant inexistant.</li><li>Supprimer un étudiant existant.</li><li>Supprimer un étudiant inexistant.</li><li>Afficher une liste vide ou une liste contenant des étudiants.</li></ul>
+</div></section>
+</div>
+</section>
+
+<section class="part" id="partie-7">
+<div class="part-header"><h2 class="part-title">Organiser les tests dans un tableau</h2></div>
+<div class="part-body">
+<section class="section-block line-section"><h3 class="section-title">Exemple de tableau de tests</h3><div class="section-body">
+<p>Un tableau de tests aide à montrer que le programme a été testé sérieusement. Il permet de comparer les données utilisées, le résultat attendu et le résultat réellement obtenu.</p>
+<div class="table-wrap spaced-block"><table><thead><tr><th>Test</th><th>Données utilisées</th><th>Résultat attendu</th><th>Résultat obtenu</th></tr></thead><tbody>
+<tr><td>Ajouter un étudiant valide</td><td>ID 1, Amine, 5141234567</td><td>L’étudiant est ajouté</td><td>À compléter</td></tr>
+<tr><td>Ajouter un ID négatif</td><td>ID -2</td><td>AssertionError</td><td>À compléter</td></tr>
+<tr><td>Ajouter un nom vide</td><td>Nom vide</td><td>AssertionError</td><td>À compléter</td></tr>
+<tr><td>Ajouter un téléphone invalide</td><td>12345</td><td>AssertionError</td><td>À compléter</td></tr>
+<tr><td>Supprimer un ID inexistant</td><td>ID 99</td><td>AssertionError</td><td>À compléter</td></tr>
+</tbody></table></div>
+</div></section>
+</div>
+</section>
+
+<section class="part" id="partie-8">
+<div class="part-header"><h2 class="part-title">Éviter les erreurs fréquentes</h2></div>
+<div class="part-body">
+<section class="section-block line-section"><h3 class="section-title">Ajouter les assertions après l’ajout</h3><div class="section-body"><p>Il faut valider les données avant de les enregistrer. La mauvaise logique consiste à ajouter l’étudiant dans la liste, puis à vérifier les données. La bonne logique consiste à vérifier les données, puis à ajouter l’étudiant dans la liste.</p></div></section>
+<section class="section-block line-section"><h3 class="section-title">Oublier que les entrées utilisateur sont des chaînes</h3><div class="section-body"><p>La fonction <strong>input()</strong> retourne toujours du texte. Même si l’utilisateur tape <strong>5</strong>, Python reçoit d’abord la valeur sous forme de chaîne : <strong>"5"</strong>. C’est pour cela qu’on utilise souvent <strong>isdigit()</strong> avant de convertir en entier.</p></div></section>
+<section class="section-block line-section"><h3 class="section-title">Confondre longueur et validité</h3><div class="section-body"><p>Un téléphone doit avoir 10 caractères, mais ces caractères doivent aussi être des chiffres. La valeur suivante a 10 caractères, mais elle n’est pas valide :</p><div class="resultblock"><div class="pcframe"><div class="pcinner"><pre class="resultpre" data-help-title="Exemple de résultat attendu" data-help-role="Ce bloc montre un résultat de sortie possible. Il ne s’agit pas d’une commande à taper, mais d’une trace à comparer avec le comportement du programme.">514ABC7890</pre></div></div></div></div></section>
+<section class="section-block line-section"><h3 class="section-title">Ne tester que les cas valides</h3><div class="section-body"><p>Un travail de test complet doit inclure des cas valides et invalides. Si les tests portent seulement sur des cas valides, ils ne montrent pas que les assertions détectent les erreurs.</p></div></section>
+</div>
+</section>
+
+<section class="part" id="partie-9">
+<div class="part-header"><h2 class="part-title">À retenir</h2></div>
+<div class="part-body">
+<section class="section-block line-section"><h3 class="section-title">Synthèse finale</h3><div class="section-body">
+<ul class="summary-list"><li>L’assurance qualité permet d’améliorer la fiabilité d’un programme.</li><li>Les tests servent à vérifier le comportement du programme dans plusieurs situations.</li><li>Une assertion vérifie qu’une condition importante est vraie.</li><li>Si une assertion échoue, Python affiche une erreur <strong>AssertionError</strong>.</li><li>Les assertions doivent être placées aux endroits pertinents du code.</li><li>Les données doivent être vérifiées avant d’être ajoutées, modifiées, supprimées ou affichées.</li><li>Le fichier final doit contenir le code avec assertions et les résultats des tests.</li></ul>
+<div class="callout spaced-block final-callout"><strong>Conclusion :</strong> le but n’est pas seulement d’ajouter des lignes de code. Le but est de montrer pourquoi chaque validation est nécessaire et comment elle améliore la qualité du programme.</div>
+</div></section>
+</div>
+</section>
+
+<section class="part" id="partie-10">
+<div class="part-header"><h2 class="part-title">Questions et travail demandé</h2></div>
+<div class="part-body">
+<section class="section-block line-section"><h3 class="section-title">Questions de compréhension</h3><div class="section-body">
+<ol><li>À quoi sert une assertion en Python ?</li><li>Pourquoi faut-il tester un programme avec des données invalides ?</li><li>Pourquoi l’ID d’un étudiant doit-il être unique ?</li><li>Pourquoi faut-il vérifier qu’un numéro de téléphone contient seulement des chiffres ?</li><li>À quel endroit faut-il vérifier qu’un étudiant existe avant de le modifier ?</li><li>Pourquoi faut-il valider les données chargées depuis un fichier ?</li><li>Quelle est la différence entre un programme qui fonctionne et un programme fiable ?</li></ol>
+</div></section>
+<section class="section-block line-section"><h3 class="section-title">Travail demandé</h3><div class="section-body">
+<p>Pour compléter ce travail, il faut étudier attentivement le code fourni, choisir 10 conditions parmi celles proposées, écrire ces conditions dans le document Word, ajouter les assertions aux endroits appropriés, tester le programme avec différents scénarios, insérer les preuves de test, ajouter le code final avec les assertions et remettre un document clair, complet et bien présenté.</p>
+</div></section>
+</div>
+</section>
+
+<section class="card qcm-card" id="qcm-final">
+<h2>QCM final de validation</h2>
+<p class="qcm-access-note">Utilise la touche Tab pour parcourir les choix puis valide avec le bouton final.</p>
+<p class="qcm-intro">Réponds aux 10 questions ci-dessous, puis valide l’ensemble avec le bouton final. La réussite est obtenue à partir de <strong>6 bonnes réponses sur 10</strong>.</p>
+<div id="qcmFinal"><div class="qcm-form qcm-block">
+<article class="qcm-question" data-correct="b" data-hint="Relis la partie sur le rôle de l’assurance qualité.">
+<h3 class="qcm-question-title">Question 1 — Quel est le rôle principal de l’assurance qualité dans ce programme ?</h3>
+<div class="qcm-options">
+<label class="qcm-option" for="q1-a"><input id="q1-a" name="q1" type="radio" value="a"/><span>Accélérer automatiquement l’ordinateur.</span></label><label class="qcm-option" for="q1-b"><input id="q1-b" name="q1" type="radio" value="b"/><span>Vérifier que le programme respecte les règles attendues et détecte les données incorrectes.</span></label><label class="qcm-option" for="q1-c"><input id="q1-c" name="q1" type="radio" value="c"/><span>Remplacer le fichier texte par une base de données.</span></label><label class="qcm-option" for="q1-d"><input id="q1-d" name="q1" type="radio" value="d"/><span>Supprimer toutes les erreurs de syntaxe avant l’exécution.</span></label></div></article>
+<article class="qcm-question" data-correct="c" data-hint="Relis la définition d’une assertion.">
+<h3 class="qcm-question-title">Question 2 — Que vérifie une assertion en Python ?</h3>
+<div class="qcm-options">
+<label class="qcm-option" for="q2-a"><input id="q2-a" name="q2" type="radio" value="a"/><span>Qu’une variable contient toujours du texte.</span></label><label class="qcm-option" for="q2-b"><input id="q2-b" name="q2" type="radio" value="b"/><span>Qu’un fichier est toujours ouvert.</span></label><label class="qcm-option" for="q2-c"><input id="q2-c" name="q2" type="radio" value="c"/><span>Qu’une condition importante est vraie.</span></label><label class="qcm-option" for="q2-d"><input id="q2-d" name="q2" type="radio" value="d"/><span>Qu’un programme ne contient aucun commentaire.</span></label></div></article>
+<article class="qcm-question" data-correct="a" data-hint="Relis le fonctionnement de assert lorsque la condition est fausse.">
+<h3 class="qcm-question-title">Question 3 — Que se passe-t-il si la condition d’une assertion est fausse ?</h3>
+<div class="qcm-options">
+<label class="qcm-option" for="q3-a"><input id="q3-a" name="q3" type="radio" value="a"/><span>Python arrête l’exécution et affiche une AssertionError.</span></label><label class="qcm-option" for="q3-b"><input id="q3-b" name="q3" type="radio" value="b"/><span>Python ignore l’erreur et continue toujours.</span></label><label class="qcm-option" for="q3-c"><input id="q3-c" name="q3" type="radio" value="c"/><span>Python sauvegarde automatiquement les données.</span></label><label class="qcm-option" for="q3-d"><input id="q3-d" name="q3" type="radio" value="d"/><span>Python transforme la condition en True.</span></label></div></article>
+<article class="qcm-question" data-correct="d" data-hint="Revois l’exemple appliqué au nom de l’étudiant.">
+<h3 class="qcm-question-title">Question 4 — Pourquoi utilise-t-on strip() pour vérifier le nom ?</h3>
+<div class="qcm-options">
+<label class="qcm-option" for="q4-a"><input id="q4-a" name="q4" type="radio" value="a"/><span>Pour convertir le nom en nombre.</span></label><label class="qcm-option" for="q4-b"><input id="q4-b" name="q4" type="radio" value="b"/><span>Pour ajouter des espaces au début du nom.</span></label><label class="qcm-option" for="q4-c"><input id="q4-c" name="q4" type="radio" value="c"/><span>Pour supprimer le fichier etudiants.txt.</span></label><label class="qcm-option" for="q4-d"><input id="q4-d" name="q4" type="radio" value="d"/><span>Pour enlever les espaces au début et à la fin avant de vérifier si le nom est vide.</span></label></div></article>
+<article class="qcm-question" data-correct="b" data-hint="Relis les assertions proposées dans la fonction ajouter_etudiant().">
+<h3 class="qcm-question-title">Question 5 — Quelle condition permet de vérifier qu’un ID saisi est un entier positif ?</h3>
+<div class="qcm-options">
+<label class="qcm-option" for="q5-a"><input id="q5-a" name="q5" type="radio" value="a"/><span>id_ in etudiants</span></label><label class="qcm-option" for="q5-b"><input id="q5-b" name="q5" type="radio" value="b"/><span>id_.isdigit() and int(id_) &gt; 0</span></label><label class="qcm-option" for="q5-c"><input id="q5-c" name="q5" type="radio" value="c"/><span>len(id_) == 10</span></label><label class="qcm-option" for="q5-d"><input id="q5-d" name="q5" type="radio" value="d"/><span>nom.strip() != &quot;&quot;</span></label></div></article>
+<article class="qcm-question" data-correct="c" data-hint="Relis la validation du téléphone.">
+<h3 class="qcm-question-title">Question 6 — Quelle règle doit respecter un numéro de téléphone valide dans cette leçon ?</h3>
+<div class="qcm-options">
+<label class="qcm-option" for="q6-a"><input id="q6-a" name="q6" type="radio" value="a"/><span>Il doit contenir exactement 4 chiffres.</span></label><label class="qcm-option" for="q6-b"><input id="q6-b" name="q6" type="radio" value="b"/><span>Il peut contenir des lettres si sa longueur est correcte.</span></label><label class="qcm-option" for="q6-c"><input id="q6-c" name="q6" type="radio" value="c"/><span>Il doit contenir exactement 10 chiffres.</span></label><label class="qcm-option" for="q6-d"><input id="q6-d" name="q6" type="radio" value="d"/><span>Il doit être identique à l’ID de l’étudiant.</span></label></div></article>
+<article class="qcm-question" data-correct="a" data-hint="Relis la condition d’unicité de l’ID.">
+<h3 class="qcm-question-title">Question 7 — Pourquoi faut-il vérifier que l’ID est unique lors de l’ajout ?</h3>
+<div class="qcm-options">
+<label class="qcm-option" for="q7-a"><input id="q7-a" name="q7" type="radio" value="a"/><span>Pour éviter que deux étudiants aient le même identifiant.</span></label><label class="qcm-option" for="q7-b"><input id="q7-b" name="q7" type="radio" value="b"/><span>Pour empêcher l’affichage des étudiants.</span></label><label class="qcm-option" for="q7-c"><input id="q7-c" name="q7" type="radio" value="c"/><span>Pour forcer tous les noms à être identiques.</span></label><label class="qcm-option" for="q7-d"><input id="q7-d" name="q7" type="radio" value="d"/><span>Pour supprimer automatiquement les anciens étudiants.</span></label></div></article>
+<article class="qcm-question" data-correct="d" data-hint="Revois la partie sur modifier_etudiant().">
+<h3 class="qcm-question-title">Question 8 — Où doit-on vérifier que l’ID à modifier existe ?</h3>
+<div class="qcm-options">
+<label class="qcm-option" for="q8-a"><input id="q8-a" name="q8" type="radio" value="a"/><span>Dans le fichier print.css.</span></label><label class="qcm-option" for="q8-b"><input id="q8-b" name="q8" type="radio" value="b"/><span>Après avoir supprimé l’étudiant.</span></label><label class="qcm-option" for="q8-c"><input id="q8-c" name="q8" type="radio" value="c"/><span>Uniquement à la fin du document Word.</span></label><label class="qcm-option" for="q8-d"><input id="q8-d" name="q8" type="radio" value="d"/><span>Dans la fonction modifier_etudiant(), avant de modifier les données.</span></label></div></article>
+<article class="qcm-question" data-correct="b" data-hint="Relis la partie sur charger_etudiants().">
+<h3 class="qcm-question-title">Question 9 — Pourquoi faut-il valider les données chargées depuis le fichier ?</h3>
+<div class="qcm-options">
+<label class="qcm-option" for="q9-a"><input id="q9-a" name="q9" type="radio" value="a"/><span>Parce que le fichier ne peut jamais contenir d’erreur.</span></label><label class="qcm-option" for="q9-b"><input id="q9-b" name="q9" type="radio" value="b"/><span>Parce que le fichier peut contenir des lignes mal formées ou des valeurs invalides.</span></label><label class="qcm-option" for="q9-c"><input id="q9-c" name="q9" type="radio" value="c"/><span>Parce que les assertions servent seulement à colorer le terminal.</span></label><label class="qcm-option" for="q9-d"><input id="q9-d" name="q9" type="radio" value="d"/><span>Parce que le téléphone doit contenir des lettres.</span></label></div></article>
+<article class="qcm-question" data-correct="c" data-hint="Relis la méthode de travail recommandée.">
+<h3 class="qcm-question-title">Question 10 — Quel ensemble de tests est le plus complet ?</h3>
+<div class="qcm-options">
+<label class="qcm-option" for="q10-a"><input id="q10-a" name="q10" type="radio" value="a"/><span>Tester seulement un étudiant valide.</span></label><label class="qcm-option" for="q10-b"><input id="q10-b" name="q10" type="radio" value="b"/><span>Tester seulement l’ouverture du programme.</span></label><label class="qcm-option" for="q10-c"><input id="q10-c" name="q10" type="radio" value="c"/><span>Tester des cas valides et invalides.</span></label><label class="qcm-option" for="q10-d"><input id="q10-d" name="q10" type="radio" value="d"/><span>Tester uniquement la sauvegarde sans vérifier les données.</span></label></div></article>
+</div>
+<div class="qcm-actions"><button class="qcm-submit" type="button">Valider le QCM</button></div>
+</div>
+</section>
+<div aria-hidden="true" class="qcm-overlay" id="qcmOverlay">
+<div aria-labelledby="qcmModalTitle" aria-modal="true" class="qcm-modal failure" role="dialog">
+<div class="qcm-modal-label">Validation à reprendre</div>
+<h3 class="qcm-modal-title" id="qcmModalTitle">Résultat du QCM</h3>
+<p class="qcm-modal-text">Le message de résultat apparaîtra ici.</p>
+<div class="qcm-modal-hints" hidden=""><h4 class="qcm-modal-hints-title">Pistes de relecture</h4><ul class="qcm-hints"></ul></div>
+<div class="qcm-modal-actions"><button class="qcm-retry" type="button">Reprendre</button><button class="qcm-close" type="button">Fermer</button></div>
+</div>
+</div>
+<footer class="course-footer"><div class="course-footer-left">Auteur : © <a class="footer-author-link" href="droits.html">Anis Ghaieb</a> — Tous droits réservés</div><div class="course-footer-right">2026</div></footer>
+</main>
+<script src="assets/script.js"></script>
+</body>
+</html>
